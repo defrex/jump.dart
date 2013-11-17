@@ -49,7 +49,7 @@ String generateCommand(List<String> arguments){
       'echo added $jump_name to jump list';
 
   }else if (args.command.name == 'remove'){
-    return 'rm $JUMP_PATH/$jump_directory;'
+    return 'rm $JUMP_PATH/$jump_name;'
       'echo removed $jump_name from jump list';
 
   }else if (args.command.name == 'list'){
