@@ -13,7 +13,7 @@ Matcher output(String operation, String location, String name){
   }else if (operation == 'add'){
     result = 'mkdir -p ~/.jumps; ln -s $location ~/.jumps/$name;echo added $name to jump list';
   }else if (operation == 'remove'){
-    result = 'rm ~/.jumps/$location;echo removed $name from jump list';
+    result = 'rm ~/.jumps/$name;echo removed $name from jump list';
   }else{
     result = 'cd ~/.jumps/$name 2>/dev/null;'
         'or echo "No such jump point: $name"';
@@ -62,7 +62,7 @@ main(){
   test('help', (){
     expect(
         generateCommand('help'.split(' ')),
-        contains('echo jump jump_name')
+        contains('echo \'jump jump_name')
     );
   });
 }
