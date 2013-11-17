@@ -57,13 +57,13 @@ String generateCommand(List<String> arguments){
 
   }else if (args.command.name == 'help'){
     return '''
-echo jump jump_name  - Go to a jump point
-echo jump command  - Manage jump points
-echo
-echo commands: add, remove, list, help
-echo
-echo -l, --location    Specify the jump directory (defaults to current directory)
-echo -n, --name        Specify the jump name (defaults to location basename)
+echo 'jump jump_name\t- Go to a jump point';
+echo 'jump command\t- Manage jump points';
+echo;
+echo 'commands: add, remove, list, help';
+echo;
+echo '-l, --location\tSpecify the jump directory (defaults to current directory)';
+echo '-n, --name\tSpecify the jump name (defaults to location basename)';
 ''';
   }
 }
