@@ -8,7 +8,7 @@ import 'package:path/path.dart' as path;
 final String JUMP_PATH = path.normalize('~/.jumps');
 
 
-ArgResults parseArguments(List<String>arguments){
+String generateCommand(List<String> arguments){
   var parser = new ArgParser();
 
   parser.addOption(
@@ -28,31 +28,28 @@ ArgResults parseArguments(List<String>arguments){
   parser.addCommand('add');
   parser.addCommand('remove');
   parser.addCommand('list');
+  parser.addCommand('help');
 
-  return parser.parse(arguments);
-}
-
-
-String generateCommand(List<String> arguments){
-  ArgResults args = parseArguments(arguments);
+  var args = parser.parse(arguments);
   var jump_name = args['name'];
   var jump_directory = args['location'];
 
-  if (jump_name == null){
+  if (jump_name == null && args.rest.length == 0){
     jump_name = path.basename(jump_directory);
+  }else if (jump_name == null && args.rest.length > 0){
+    jump_name = args.rest[0];
   }
 
-  if(args.command == null && args.rest.length > 0){
-    jump_name = args.rest[0];
+  if(args.command == null){
     return 'cd "$JUMP_PATH/$jump_name" 2>/dev/null;'
     'or echo "No such jump point: $jump_name"';
 
-  }else if (args.command == null){
+  }else if (args.command == 'help'){
     return '''
 jump jump_name  - Go to a jump point
 jump command  - Manage jump points
 
-commands: add, remove, list
+commands: add, remove, list, help
 
 -l, --location    Specify the jump directory (defaults to current directory)
 -n, --name        Specify the jump name (defaults to location basename)

@@ -3,6 +3,7 @@ library test;
 
 import 'package:unittest/unittest.dart';
 import 'package:jump/jump.dart';
+import 'package:path/path.dart' as path;
 
 
 String output(String operation, String location, String name){
@@ -12,25 +13,47 @@ String output(String operation, String location, String name){
     return 'mkdir -p "~/.jumps"; ln -s ($location) "~/.jumps/$name";echo added $name to jump list';
   }else if (operation == 'remove'){
     return 'rm ~/.jumps/$location;echo removed $name from jump list';
+  }else{
+    return 'cd "~/.jumps/$name" 2>/dev/null;'
+        'or echo "No such jump point: $name"';
   }
 }
 
 
 main(){
-  expect(
-      generateCommand('add --location ~/ --name home'.split(' ')),
-      output('add', '~/', 'home')
-  );
-  expect(
-      generateCommand('remove --location ~/ --name home'.split(' ')),
-      output('remove', '~/', 'home')
-  );
-  expect(
-      generateCommand('list'.split(' ')),
-      output('list', '~/', 'home')
-  );
-  expect(
-      generateCommand('--location ~/ --name home'.split(' ')),
-      output('add', '~/', 'home')
-  );
+  test('add', (){
+    expect(
+        generateCommand('add --location ~/ --name home'.split(' ')),
+        output('add', '~/', 'home')
+    );
+    expect(
+        generateCommand('add --location /home/defrex'.split(' ')),
+        output('add', '/home/defrex', 'defrex')
+    );
+    expect(
+        generateCommand('add'.split(' ')),
+        output('add', path.current, path.basename(path.current))
+    );
+  });
+
+  test('remove', (){
+    expect(
+        generateCommand('remove --location ~/ --name home'.split(' ')),
+        output('remove', '~/', 'home')
+    );
+  });
+
+  test('list', (){
+    expect(
+        generateCommand('list'.split(' ')),
+        output('list', '~/', 'home')
+    );
+  });
+
+  test('jump', (){
+    expect(
+        generateCommand('--location ~/ --name home'.split(' ')),
+        output(null, '~/', 'home')
+    );
+  });
 }
