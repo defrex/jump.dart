@@ -2,7 +2,7 @@
 library test;
 
 import 'package:unittest/unittest.dart';
-import 'jump.dart' as jump;
+import 'package:jump/jump.dart';
 
 
 String output(String operation, String location, String name){
@@ -18,19 +18,19 @@ String output(String operation, String location, String name){
 
 main(){
   expect(
-      jump.generateCommand('add --location ~/ --name home'.split(' ')),
+      generateCommand('add --location ~/ --name home'.split(' ')),
       output('add', '~/', 'home')
   );
   expect(
-      jump.generateCommand('remove --location ~/ --name home'.split(' ')),
+      generateCommand('remove --location ~/ --name home'.split(' ')),
       output('remove', '~/', 'home')
   );
   expect(
-      jump.generateCommand('list'.split(' ')),
+      generateCommand('list'.split(' ')),
       output('list', '~/', 'home')
   );
   expect(
-      jump.generateCommand('--location ~/ --name home'.split(' ')),
+      generateCommand('--location ~/ --name home'.split(' ')),
       output('add', '~/', 'home')
   );
 }
