@@ -6,17 +6,19 @@ import 'package:jump/jump.dart';
 import 'package:path/path.dart' as path;
 
 
-String output(String operation, String location, String name){
+Matcher output(String operation, String location, String name){
+  String result;
   if (operation == 'list'){
-    return 'ls -l "~/.jumps" | sed \'s/  / /g\' | cut -d\' \' -f9- | sed \'s/ -/\t-/g\'; and echo';
+    result = 'ls -l ~/.jumps | sed \'s/  / /g\' | cut -d\' \' -f9- | sed \'s/ -/\t-/g\'; and echo';
   }else if (operation == 'add'){
-    return 'mkdir -p "~/.jumps"; ln -s ($location) "~/.jumps/$name";echo added $name to jump list';
+    result = 'mkdir -p ~/.jumps; ln -s $location ~/.jumps/$name;echo added $name to jump list';
   }else if (operation == 'remove'){
-    return 'rm ~/.jumps/$location;echo removed $name from jump list';
+    result = 'rm ~/.jumps/$location;echo removed $name from jump list';
   }else{
-    return 'cd "~/.jumps/$name" 2>/dev/null;'
+    result = 'cd ~/.jumps/$name 2>/dev/null;'
         'or echo "No such jump point: $name"';
   }
+  return equals(result);
 }
 
 
@@ -54,6 +56,13 @@ main(){
     expect(
         generateCommand('--location ~/ --name home'.split(' ')),
         output(null, '~/', 'home')
+    );
+  });
+
+  test('help', (){
+    expect(
+        generateCommand('help'.split(' ')),
+        contains('echo jump jump_name')
     );
   });
 }
