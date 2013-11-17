@@ -1,5 +1,5 @@
 
-set DART_JUMP ~/code/dart-jump
+set DART_JUMP ~/code/jump
 
 function jump
   eval (eval $DART_JUMP/bin/jump.dart $argv)
