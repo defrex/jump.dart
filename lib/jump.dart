@@ -41,7 +41,7 @@ String generateCommand(List<String> arguments){
   }
 
   if(args.command == null){
-    return 'cd $JUMP_PATH/$jump_name 2>/dev/null'
+    return 'cd "\$(readlink -f $JUMP_PATH/$jump_name)" 2>/dev/null'
     '|| echo "No such jump point: $jump_name"';
 
   }else if (args.command.name == 'add'){
